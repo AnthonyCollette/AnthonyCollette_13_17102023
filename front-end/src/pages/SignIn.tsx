@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from'react-redux';
-import { store, getToken, AppDispatch } from '../store/store';
+import { getToken, AppDispatch } from '../store/store';
 import Nav from '../components/Nav';
 import Footer from '../components/Footer';
 
@@ -10,20 +11,23 @@ const SignIn = () => {
     const passwordRef = useRef<HTMLInputElement>(null);
 
     const dispatch = useDispatch<AppDispatch>()
+    const navigate = useNavigate()
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         const data = {email: emailRef?.current?.value, password: passwordRef?.current?.value};
-        const token = dispatch(getToken(data)).then((res) => {
+        dispatch(getToken(data)).then((res) => {
             dispatch({
                 type: 'user/setToken',
                 payload: res.payload
             })
-        })       
+        })
     }
 
     useEffect(() => {
-        console.log(tokenFromStore)
+        if (tokenFromStore !== '') {
+            navigate('/profile')
+        }
     }, [tokenFromStore])
 
     return (<>

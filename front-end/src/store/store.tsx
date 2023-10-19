@@ -1,24 +1,32 @@
 import { createSlice, configureStore, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
+interface User {
+    firstName: string,
+    lastName: string,
+    email: string,
+    password: string,
+}
+
 const userSlice = createSlice({
     name: 'user',
     initialState: {
         token: '',
         user: {
-            firstName: null,
-            lastName: null,
-            email: null,
-            password: null
+            firstName: '',
+            lastName: '',
+            email: ''
         }
     },
     reducers: {
         setToken: (state, action: PayloadAction<string>) => {
             state.token = action.payload;
+        },
+        setUser: (state, action: PayloadAction<User>) => {
+            state.user = { firstName: action.payload.firstName, lastName: action.payload.lastName, email: action.payload.email };
         }
     }
-}
-)
+})
 
 export const getToken = createAsyncThunk('user/getToken', async (data: object) => {
     const response = await axios.post('http://localhost:3001/api/v1/user/login', data, {

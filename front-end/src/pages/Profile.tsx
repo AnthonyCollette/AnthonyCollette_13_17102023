@@ -1,14 +1,51 @@
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import axios from 'axios';
+import { AppDispatch, store } from '../store/store';
 import Nav from '../components/Nav';
 import Footer from '../components/Footer';
 
-const User = () => {
+
+const Profile = () => {
+
+    const dispatch = useDispatch<AppDispatch>()
+    const navigate = useNavigate()
+    const tokenFromStore = useSelector((state: any) => state.user.token)
+    const user = useSelector((state: any) => state.user.user)
+
+    const handleClick = (e: React.MouseEvent) => {
+        e.preventDefault()
+    }
+
+    useEffect(() => {
+        if (tokenFromStore == '') {
+            navigate('/login')
+        } else {
+            if (tokenFromStore != '') {
+                axios.defaults.headers.common['Authorization'] = `Bearer ${tokenFromStore}`
+                const request = axios.post('http://localhost:3001/api/v1/user/profile').then((res) => {
+                    dispatch({
+                        type: 'user/setUser',
+                        payload: {
+                            firstName: res.data.body.firstName,
+                            lastName: res.data.body.lastName,
+                            email: res.data.body.email
+                        }
+                    })
+                })
+            }
+        }
+    }, [])
+
     return (
         <>
             <Nav />
             <main className="main bg-dark">
                 <div className="header">
-                    <h1>Welcome back<br />Tony Jarvis!</h1>
-                    <button className="edit-button">Edit Name</button>
+                    <h1>Welcome back<br />{ user.firstName }!</h1>
+                    {/* {!isLoading && <h1>Welcome back<br />{ user.firstName }!</h1>} */}
+                    <button className="edit-button" onClick={handleClick}>Edit Name</button>
                 </div>
                 <h2 className="sr-only">Accounts</h2>
                 <section className="account">
@@ -47,4 +84,4 @@ const User = () => {
     );
 };
 
-export default User;
+export default Profile;
