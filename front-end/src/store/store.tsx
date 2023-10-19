@@ -24,6 +24,10 @@ const userSlice = createSlice({
         },
         setUser: (state, action: PayloadAction<User>) => {
             state.user = { firstName: action.payload.firstName, lastName: action.payload.lastName, email: action.payload.email };
+        },
+        disconnect: (state) => {
+            state.token = '';
+            state.user = { firstName: '', lastName: '', email: '' };
         }
     }
 })
