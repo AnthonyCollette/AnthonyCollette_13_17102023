@@ -8,6 +8,11 @@ interface User {
     password: string,
 }
 
+interface UpdateUser {
+    firstName: string,
+    lastName: string,
+}
+
 const userSlice = createSlice({
     name: 'user',
     initialState: {
@@ -28,6 +33,15 @@ const userSlice = createSlice({
         disconnect: (state) => {
             state.token = '';
             state.user = { firstName: '', lastName: '', email: '' };
+        },
+        updateUser: (state, action: PayloadAction<UpdateUser>) => {
+            if (action.payload.firstName !== '') {
+                state.user.firstName = action.payload.firstName;
+            }
+            if (action.payload.lastName !== '') {
+                state.user.lastName = action.payload.lastName;
+            }
+            
         }
     }
 })
@@ -39,6 +53,15 @@ export const getToken = createAsyncThunk('user/getToken', async (data: object) =
         }
     })
     return response.data.body.token
+})
+
+export const updateUser = createAsyncThunk('user/updateUser', async (data: object) => {
+    const response = await axios.put('http://localhost:3001/api/v1/user/profile', data, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    return response.data.body
 })
 
 export const store = configureStore({

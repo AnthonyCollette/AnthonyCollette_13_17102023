@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
-import { AppDispatch, store } from '../store/store';
+import { AppDispatch, updateUser, getToken } from '../store/store';
 import Nav from '../components/Nav';
 import Footer from '../components/Footer';
 
@@ -11,11 +11,33 @@ const Profile = () => {
 
     const dispatch = useDispatch<AppDispatch>()
     const navigate = useNavigate()
+
+    const firstNameRef = useRef<HTMLInputElement>(null);
+    const lastNameRef = useRef<HTMLInputElement>(null);
+
     const tokenFromStore = useSelector((state: any) => state.user.token)
     const user = useSelector((state: any) => state.user.user)
+    const [openModal, setOpenModal] = useState(false)
+
+
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        const data = { firstName: firstNameRef?.current?.value, lastName: lastNameRef?.current?.value };
+        dispatch(updateUser(data)).then((res) => dispatch({
+            type: 'user/updateUser',
+            payload: res.payload
+        }))
+        setOpenModal(false)
+    }
 
     const handleClick = (e: React.MouseEvent) => {
         e.preventDefault()
+        setOpenModal(state => !state)
+    }
+
+    const handleClose = () => {
+        setOpenModal(false)
     }
 
     useEffect(() => {
@@ -43,8 +65,7 @@ const Profile = () => {
             <Nav />
             <main className="main bg-dark">
                 <div className="header">
-                    <h1>Welcome back<br />{ user.firstName }!</h1>
-                    {/* {!isLoading && <h1>Welcome back<br />{ user.firstName }!</h1>} */}
+                    <h1>Welcome back<br />{user.firstName}!</h1>
                     <button className="edit-button" onClick={handleClick}>Edit Name</button>
                 </div>
                 <h2 className="sr-only">Accounts</h2>
@@ -78,6 +99,24 @@ const Profile = () => {
                         <button className="transaction-button">View transactions</button>
                     </div>
                 </section>
+                {openModal && <div className='modal'>
+                    <div className='overlay'>
+                        <i className="fa fa-times" onClick={handleClose}></i>
+                        <h2>Edit profile</h2>
+                        <form>
+                            <div className="input-wrapper">
+                                <label htmlFor="firstName">First Name</label>
+                                <input type="text" id="firstName" ref={firstNameRef} />
+                            </div>
+                            <div className="input-wrapper">
+                                <label htmlFor="lastName">Last Name</label>
+                                <input type="text" id="lastName" ref={lastNameRef} />
+                            </div>
+                            <button onClick={handleSubmit} className="sign-in-button">Sign In</button>
+                        </form>
+                    </div>
+                </div>}
+
             </main>
             <Footer />
         </>
