@@ -24,7 +24,7 @@ const Profile = () => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         const data = { firstName: firstNameRef?.current?.value, lastName: lastNameRef?.current?.value };
-        dispatch(updateUser(data)).then((res) => dispatch({
+        dispatch(updateUser(data)).then((res: any) => dispatch({
             type: 'user/updateUser',
             payload: res.payload
         }))
