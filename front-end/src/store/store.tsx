@@ -1,4 +1,4 @@
-import { createSlice, configureStore, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice, configureStore, PayloadAction, createAsyncThunk, combineReducers } from '@reduxjs/toolkit'
 import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import axios from 'axios'
@@ -19,6 +19,7 @@ interface UpdateUser {
 const userSlice = createSlice({
     name: 'user',
     initialState: {
+        remembered: false,
         token: '',
         user: {
             firstName: '',
@@ -49,12 +50,31 @@ const userSlice = createSlice({
     }
 })
 
-// const persistConfig = {
-//     key: 'root',
-//     storage
-// }
+const persistConfig = {
+    key: 'root',
+    storage
+}
 
-// const persistedReducer = persistReducer(persistConfig, userSlice.reducer)
+const rootReducer = combineReducers({
+	user: userSlice.reducer,
+})
+
+
+
+const persistedReducer = persistReducer<RootReducer>(
+	persistConfig,
+	rootReducer
+)
+
+export type RootReducer = ReturnType<typeof rootReducer>;
+
+export const store = configureStore({
+	reducer: persistedReducer,
+	middleware: (getDefaultMiddleware) =>
+		getDefaultMiddleware({
+			serializableCheck: false,
+		})
+})
 
 export const getToken = createAsyncThunk('user/getToken', async (data: object) => {
     const response = await axios.post('http://localhost:3001/api/v1/user/login', data, {
@@ -74,15 +94,7 @@ export const updateUser = createAsyncThunk('user/updateUser', async (data: objec
     return response.data.body
 })
 
-export const store = configureStore({
-    reducer: {
-        user: userSlice.reducer
-    }
-    // reducer: persistedReducer,
-    // middleware: [thunk]
-})
-
-// export const persistor = persistStore(store)
+export const persistor = persistStore(store)
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 // export type RootState = ReturnType<typeof store.getState>

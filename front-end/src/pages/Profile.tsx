@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
-import { AppDispatch, updateUser, getToken } from '../store/store';
+import { AppDispatch, updateUser, store } from '../store/store';
 import Nav from '../components/Nav';
 import Footer from '../components/Footer';
 
@@ -58,6 +58,8 @@ const Profile = () => {
                 })
             }
         }
+
+        console.log(store.getState())
     }, [])
 
     return (
