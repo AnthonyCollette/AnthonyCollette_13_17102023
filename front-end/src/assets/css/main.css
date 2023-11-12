@@ -23,16 +23,19 @@ body {
 
 .sr-only {
   border: 0 !important;
-  clip: rect(1px, 1px, 1px, 1px) !important; /* 1 */
+  clip: rect(1px, 1px, 1px, 1px) !important;
+  /* 1 */
   -webkit-clip-path: inset(50%) !important;
-  clip-path: inset(50%) !important; /* 2 */
+  clip-path: inset(50%) !important;
+  /* 2 */
   height: 1px !important;
   margin: -1px !important;
   overflow: hidden !important;
   padding: 0 !important;
   position: absolute !important;
   width: 1px !important;
-  white-space: nowrap !important; /* 3 */
+  white-space: nowrap !important;
+  /* 3 */
 }
 
 .main-nav {
@@ -312,4 +315,29 @@ body {
   top: 10px;
   right: 10px;
   cursor: pointer;
+}
+
+.nav--item {
+  margin: 0 20px 0 5px;
+}
+
+.error-404 .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+  margin: 0 auto 50px;
+}
+
+.error-404 h1 {
+  font-size: 168px;
+  color: #00bc77;
+}
+
+.error-404 h2 {
+  color: #00bc77;
+}
+
+.error-404 .container a:hover {
+  color: #00bc77;
 }

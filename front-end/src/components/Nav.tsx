@@ -7,6 +7,7 @@ const Nav = () => {
 
   const dispatch = useDispatch<AppDispatch>()
   const token = useSelector((state: any) => state.user.token)
+  const firstName = useSelector((state: any) => state.user.user.firstName)
 
   const handleClick = () => {
     dispatch({
@@ -25,10 +26,16 @@ const Nav = () => {
         <h1 className="sr-only">Argent Bank</h1>
       </NavLink>
       <div>
-        {token != '' ? <NavLink onClick={handleClick} className="main-nav-item" to="/login">
-          <i className="fa fa-user-circle"></i>
+        {token != '' ? <>
+        <i className="fa fa-user-circle"></i>
+        <NavLink to="/profile" className="nav--item">
+          {firstName}
+        </NavLink>
+        <i className="fa fa-sign-out"></i>
+        <NavLink onClick={handleClick} className="main-nav-item" to="/login">
+          
           Disconnect
-        </NavLink> : <NavLink className="main-nav-item" to="/login">
+        </NavLink></> : <NavLink className="main-nav-item" to="/login">
           <i className="fa fa-user-circle"></i>
           Sign In
         </NavLink>}
