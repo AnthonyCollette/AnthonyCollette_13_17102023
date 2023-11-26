@@ -3,6 +3,7 @@ import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import axios from 'axios'
 import thunk from 'redux-thunk'
+import getStoredState from 'redux-persist/es/getStoredState'
 
 interface User {
     firstName: string,
@@ -68,6 +69,11 @@ const persistedReducer = persistReducer<RootReducer>(
 
 export type RootReducer = ReturnType<typeof rootReducer>;
 
+// export const store = configureStore({
+//     reducer: {
+//         user: userSlice.reducer,
+//     }
+// })
 export const store = configureStore({
 	reducer: persistedReducer,
 	middleware: (getDefaultMiddleware) =>

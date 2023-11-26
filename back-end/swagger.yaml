@@ -110,6 +110,76 @@ paths:
           description: Invalid Fields
         '500':
           description: Internal Server Error
+  /user/transactions:
+    get:
+      security:
+        - Bearer: []
+      description: API pour obtenir les transactions de l'utilisateur
+      parameters:
+        accountID: ID du compte spécifique pour lequel on souhaite obtenir les transactions
+      respones:
+        '200':
+          description: Transactions retrieved successfully
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+  /user/transactions/transactionID:
+    get:
+      security:
+        - Bearer: []
+      description: API pour obtenir une transaction spécifique
+      parameters:
+        transactionID: ID de la transaction que l'on souhaite obtenir
+      respones:
+        '200':
+          description: Transactions retrieved successfully
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+    put:
+      security:
+        - Bearer: []
+      description: API pour modifier une transaction spécifique
+      parameters:
+        transactionID: ID de la transaction que l'on souhaite modifier
+        category: Catégorie de la transaction que l'on souhaite modifier
+      respones:
+        '200':
+          description: Category modified successfully
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+    post:
+      security:
+        - Bearer: []
+      description: API pour modifier une transaction spécifique
+      parameters:
+        transactionID: ID de la transaction que l'on souhaite modifier
+        notes: Notes de la transaction que l'on souhaite créer
+      respones:
+        '200':
+          description: Notes created successfully
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+    delete:
+      security:
+        - Bearer: []
+      description: API pour modifier une transaction spécifique
+      parameters:
+        transactionID: ID de la transaction que l'on souhaite modifier
+        notes: Notes de la transaction que l'on souhaite supprimer
+      respones:
+        '200':
+          description: Transactions deleted successfully
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
 securityDefinitions:
   Bearer:
     type: apiKey
