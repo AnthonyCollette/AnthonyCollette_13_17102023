@@ -4,6 +4,7 @@ import storage from 'redux-persist/lib/storage'
 import axios from 'axios'
 import thunk from 'redux-thunk'
 import getStoredState from 'redux-persist/es/getStoredState'
+import createWebStorage from 'redux-persist/es/storage/createWebStorage'
 
 interface User {
     firstName: string,
@@ -31,6 +32,8 @@ const userSlice = createSlice({
     reducers: {
         setToken: (state, action: PayloadAction<string>) => {
             state.token = action.payload;
+
+
         },
         setUser: (state, action: PayloadAction<User>) => {
             state.user = { firstName: action.payload.firstName, lastName: action.payload.lastName, email: action.payload.email };
@@ -50,6 +53,28 @@ const userSlice = createSlice({
         }
     }
 })
+
+
+// const shouldPersist = true;
+// let persistConfigs
+// if(shouldPersist){
+//     persistConfigs = {
+//         key: 'root',
+//         storage: createWebStorage('local')
+//     }
+// } else {
+//     persistConfigs = {
+//         key: 'root',
+//         storage: createWebStorage('memory')
+//     }
+// }
+// const persistedReducer = persistReducer(persistConfigs, userSlice.reducer)
+// export const configureStore = () => {
+//     const store = createStore(persistReducer)
+//     const persistor = persistStore(store)
+//     return {store, persistor}
+// }
+
 
 const persistConfig = {
     key: 'root',
@@ -88,6 +113,8 @@ export const getToken = createAsyncThunk('user/getToken', async (data: object) =
             'Content-Type': 'application/json'
         }
     })
+    // si la case est checked, passer le store remember à true
+
     return response.data.body.token
 })
 
