@@ -43,68 +43,27 @@ const userSlice = createSlice({
             state.user = { firstName: '', lastName: '', email: '' };
         },
         updateUser: (state, action: PayloadAction<UpdateUser>) => {
+            // A DEBUGGER
             if (action.payload.firstName !== '') {
                 state.user.firstName = action.payload.firstName;
             }
             if (action.payload.lastName !== '') {
                 state.user.lastName = action.payload.lastName;
             }
-
         }
     }
 })
-
-
-// const shouldPersist = true;
-// let persistConfigs
-// if(shouldPersist){
-//     persistConfigs = {
-//         key: 'root',
-//         storage: createWebStorage('local')
-//     }
-// } else {
-//     persistConfigs = {
-//         key: 'root',
-//         storage: createWebStorage('memory')
-//     }
-// }
-// const persistedReducer = persistReducer(persistConfigs, userSlice.reducer)
-// export const configureStore = () => {
-//     const store = createStore(persistReducer)
-//     const persistor = persistStore(store)
-//     return {store, persistor}
-// }
-
-
-const persistConfig = {
-    key: 'root',
-    storage
-}
 
 const rootReducer = combineReducers({
 	user: userSlice.reducer,
 })
 
-
-
-const persistedReducer = persistReducer<RootReducer>(
-	persistConfig,
-	rootReducer
-)
-
 export type RootReducer = ReturnType<typeof rootReducer>;
 
-// export const store = configureStore({
-//     reducer: {
-//         user: userSlice.reducer,
-//     }
-// })
 export const store = configureStore({
-	reducer: persistedReducer,
-	middleware: (getDefaultMiddleware) =>
-		getDefaultMiddleware({
-			serializableCheck: false,
-		})
+    reducer: {
+        user: userSlice.reducer,
+    }
 })
 
 export const getToken = createAsyncThunk('user/getToken', async (data: object) => {
@@ -113,8 +72,6 @@ export const getToken = createAsyncThunk('user/getToken', async (data: object) =
             'Content-Type': 'application/json'
         }
     })
-    // si la case est checked, passer le store remember à true
-
     return response.data.body.token
 })
 
@@ -126,8 +83,6 @@ export const updateUser = createAsyncThunk('user/updateUser', async (data: objec
     })
     return response.data.body
 })
-
-export const persistor = persistStore(store)
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 // export type RootState = ReturnType<typeof store.getState>

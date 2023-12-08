@@ -404,5 +404,3 @@ definitions:
     properties:
       notes:
         type: string
-
-      
