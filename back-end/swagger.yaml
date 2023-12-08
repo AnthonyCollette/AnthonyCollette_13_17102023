@@ -31,6 +31,10 @@ paths:
             $ref: '#/definitions/LoginResponse'
         '400':
           description: Invalid Fields
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
         '500':
           description: Internal Server Error
   /user/signup:
@@ -55,6 +59,10 @@ paths:
             $ref: '#/definitions/ApiResponse'
         '400':
           description: Invalid Fields
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
         '500':
           description: Internal Server Error
   /user/profile:
@@ -80,6 +88,10 @@ paths:
             $ref: '#/definitions/ApiResponse'
         '400':
           description: Invalid Fields
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
         '500':
           description: Internal Server Error
     patch:
@@ -110,6 +122,10 @@ paths:
             $ref: '#/definitions/ApiResponse'
         '400':
           description: Invalid Fields
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
         '500':
           description: Internal Server Error
   /user/transactions:
@@ -141,6 +157,10 @@ paths:
             $ref: '#/definitions/Transactions'
         '400':
           description: Invalid Fields
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
         '500':
           description: Internal Server Error
   /user/transactions/{transactionID}:
@@ -174,6 +194,10 @@ paths:
             $ref: '#/definitions/TransactionIdApi'
         '400':
           description: Invalid Fields
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
         '500':
           description: Internal Server Error
     patch:
@@ -182,7 +206,7 @@ paths:
       summary: Specific Transaction API
       security:
         - Bearer: []
-      description: API for modifying or deleting a specific transaction
+      description: API for modifying a specific transaction
       parameters:
         - in: header
           type: string
@@ -191,21 +215,60 @@ paths:
           required: true
         - in: path
           name: transactionID
-          description: ID of transaction to modify or delete
+          description: ID of transaction to modify
           type: integer
           required: true
         - in: body
           name: body
           schema:
-            $ref: '#/definitions/Transaction'
+            $ref: '#/definitions/TransactionCategory'
           required: true
       responses:
         '200':
           description: Category modified successfully
         '400':
           description: Invalid Fields
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
         '500':
           description: Internal Server Error
+    put:
+      tags:
+        - Transaction Module
+      summary: Modify or delete note
+      security:
+        - Bearer: []
+      description: API for modifying or deleting a note
+      parameters:
+        - in: header
+          type: string
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+        - in: path
+          name: transactionID
+          description: ID of transaction to modify
+          type: integer
+          required: true
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/TransactionNotes'
+          required: true
+      responses:
+        '200':
+          description: Note modified successfully
+        '400':
+          description: Invalid Fields
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal Server Error
+          
 securityDefinitions:
   Bearer:
     type: apiKey
@@ -287,11 +350,19 @@ definitions:
               items:
                 type: object
                 properties:
+                  id:
+                    type: integer
                   date:
                     type: string
                   amount:
                     type: number
-                  recipient:
+                  description:
+                    type: string
+                  category:
+                    type: string
+                  balance:
+                    type: number
+                  type:
                     type: string
   TransactionIdApi:
     type: object
@@ -303,22 +374,35 @@ definitions:
       body:
         type: object
         properties:
+          id:
+            type: integer
           date:
             type: string
           amount:
             type: number
-          recipient:
+          description:
             type: string
+          category:
+            type: string
+          balance:
+            type: number
+          type:
+            type: string
+          
   TransactionId:
     type: object
     properties:
       transactionId: 
         type: integer
-  Transaction:
+  TransactionCategory:
     type: object
     properties:
       category:
         type: string
+  TransactionNotes:
+    type: object
+    properties:
       notes:
         type: string
+
       
