@@ -358,8 +358,6 @@ definitions:
                     type: number
                   description:
                     type: string
-                  category:
-                    type: string
                   balance:
                     type: number
                   type:
@@ -387,6 +385,8 @@ definitions:
           balance:
             type: number
           type:
+            type: string
+          notes:
             type: string
           
   TransactionId:

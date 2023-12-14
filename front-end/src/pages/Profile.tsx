@@ -47,11 +47,25 @@ const Profile = () => {
             if (tokenFromStore != '') {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${tokenFromStore}`
                 const request = axios.post('http://localhost:3001/api/v1/user/profile').then((res) => {
+                    let fnPayload = () => {
+                        if (res.data.body.firstName == '') {
+                            return user.firstName
+                        } else {
+                            return res.data.body.firstName
+                        }
+                    }
+                    let lnPayload = () => {
+                        if (res.data.body.lastName == '') {
+                            return user.lastName
+                        } else {
+                            return res.data.body.lastName
+                        }
+                    }
                     dispatch({
                         type: 'user/setUser',
                         payload: {
-                            firstName: res.data.body.firstName,
-                            lastName: res.data.body.lastName,
+                            firstName: fnPayload,
+                            lastName: lnPayload,
                             email: res.data.body.email
                         }
                     })
@@ -106,11 +120,11 @@ const Profile = () => {
                         <form>
                             <div className="input-wrapper">
                                 <label htmlFor="firstName">First Name</label>
-                                <input type="text" id="firstName" ref={firstNameRef} />
+                                <input type="text" id="firstName" ref={firstNameRef} placeholder={user.firstName} defaultValue={user.firstName} />
                             </div>
                             <div className="input-wrapper">
                                 <label htmlFor="lastName">Last Name</label>
-                                <input type="text" id="lastName" ref={lastNameRef} />
+                                <input type="text" id="lastName" ref={lastNameRef} placeholder={user.lastName} defaultValue={user.lastName} />
                             </div>
                             <button onClick={handleSubmit} className="sign-in-button">Sign In</button>
                         </form>
