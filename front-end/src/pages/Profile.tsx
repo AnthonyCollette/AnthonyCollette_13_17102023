@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
-import { AppDispatch, updateUser, store } from '../store/store';
+import { AppDispatch, updateUser } from '../store/store';
 import Nav from '../components/Nav';
 import Footer from '../components/Footer';
 
@@ -55,6 +55,7 @@ const Profile = () => {
                         }
                     }
                     let lnPayload = () => {
+                        console.log(res.data.body)
                         if (res.data.body.lastName == '') {
                             return user.lastName
                         } else {
@@ -64,8 +65,8 @@ const Profile = () => {
                     dispatch({
                         type: 'user/setUser',
                         payload: {
-                            firstName: fnPayload,
-                            lastName: lnPayload,
+                            firstName: fnPayload(),
+                            lastName: lnPayload(),
                             email: res.data.body.email
                         }
                     })
