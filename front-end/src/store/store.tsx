@@ -32,8 +32,6 @@ const userSlice = createSlice({
     reducers: {
         setToken: (state, action: PayloadAction<string>) => {
             state.token = action.payload;
-
-
         },
         setUser: (state, action: PayloadAction<User>) => {
             state.user = { firstName: action.payload.firstName, lastName: action.payload.lastName, email: action.payload.email };
@@ -43,13 +41,8 @@ const userSlice = createSlice({
             state.user = { firstName: '', lastName: '', email: '' };
         },
         updateUser: (state, action: PayloadAction<UpdateUser>) => {
-            // A DEBUGGER
-            if (action.payload.firstName !== '') {
                 state.user.firstName = action.payload.firstName;
-            }
-            if (action.payload.lastName !== '') {
                 state.user.lastName = action.payload.lastName;
-            }
         }
     }
 })

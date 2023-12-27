@@ -23,7 +23,21 @@ const Profile = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        const data = { firstName: firstNameRef?.current?.value, lastName: lastNameRef?.current?.value };
+        const userFirstName = () => {
+            if (firstNameRef?.current?.value !== '') {
+                return firstNameRef?.current?.value
+            } else {
+                return user.firstName
+            }
+        }
+        const userLastName = () => {
+            if (lastNameRef?.current?.value !== '') {
+                return lastNameRef?.current?.value
+            } else {
+                return user.lastName
+            }
+        }
+        const data = { firstName: userFirstName(), lastName: userLastName() };
         dispatch(updateUser(data)).then((res: any) => dispatch({
             type: 'user/updateUser',
             payload: res.payload
@@ -55,7 +69,6 @@ const Profile = () => {
                         }
                     }
                     let lnPayload = () => {
-                        console.log(res.data.body)
                         if (res.data.body.lastName == '') {
                             return user.lastName
                         } else {
